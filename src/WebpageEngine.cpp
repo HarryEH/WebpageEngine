@@ -73,42 +73,47 @@ void LinkedList::deleteLast()
 // Method to delete en element in the list
 void LinkedList::removeElement(String tag, String content, int attribNum, int childNum)
 {
-  node *tmp = getHead();// account for the case where we delete the head
+  node *tmp = getHead();
+  // Case where we delete the head
   if ( (tmp->data).tag.equals(tag)
-    && (tmp->data).content.equals(content)
-    && (tmp->data).attribNum == attribNum
-    && (tmp->data).childNum == childNum )
+  && (tmp->data).content.equals(content)
+  && (tmp->data).attribNum == attribNum
+  && (tmp->data).childNum == childNum )
   {
     node *vTmp = NULL;
     if(tmp->next != NULL)
     {
-       vTmp = tmp->next;// gets the
+    vTmp = tmp->next;// gets the next
     } else
     {
-      tail == NULL;
+    tail == NULL;
     }
-    delete tmp;
     this->head = vTmp;// set to either null or the element after the one we deleted
-  } else { // it wasn't the head!
+    delete tmp;
+  } else
+  { // it wasn't the head!
     while(tmp->next != NULL)
     {
-      if ( (tmp->next->data).tag.equals(tag)
-        && (tmp->next->data).content.equals(content)
-        && (tmp->next->data).attribNum == attribNum
-        && (tmp->next->data).childNum  == childNum )
+      node *y = tmp->next;
+      if ( (y->data).tag.equals(tag)
+        && (y->data).content.equals(content)
+        && (y->data).attribNum == attribNum
+        && (y->data).childNum  == childNum )
       {
         node *vTmp = NULL;
-        if(tmp->next->next != NULL)
+        if(y->next != NULL)
         {
-           vTmp = tmp->next->next;// gets the next next :o
+          vTmp = y->next;// gets the next next :o
         } else
         {
           tail = tmp;// if the next next doesn't exist then next is the tail
         }
-        delete tmp->next;
         tmp->next = vTmp;// set to either null or the element after the one we deleted
+        delete y;
       }
+
       tmp = tmp->next;
+
     }
   }
 }
