@@ -8,13 +8,11 @@ Use `#include <WebpageEngine.h>` and see the examples for how to use it
 ## Examples
 These are all simple examples that I have written
 ### HelloWorld
-A simple hello world page
-### Css
-A simple hello world page with Css
+A simple hello world page!
 ### Button
-A button on the page :o!
+Buttons on the page!
 ### Form
-An example of a form
+An example of a form!
 
 ### Background
 I made this library when doing 'extra' work for a third year Computer Science module at the University of Sheffield - http://www.dcs.shef.ac.uk/intranet/teaching/public/modules/level3/com3505.html

@@ -19,7 +19,7 @@ void generateWebPage()
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-// Setup function for exercise seven
+// Setup
 void setup()
 {
 
@@ -30,7 +30,7 @@ void setup()
   WiFi.mode(WIFI_AP_STA);// Access point station
 
   Serial.println("Creating wifi access point");
-  WiFi.softAP(SSID,PASSWORD);// These are coming from IotGenericFunctions.h
+  WiFi.softAP(SSID,PASSWORD);
   Serial.print("IP address to connect to: ");
   Serial.println(WiFi.softAPIP());
 

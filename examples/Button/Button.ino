@@ -48,10 +48,9 @@ void error404()
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-// Setup function for exercise seven
+// Setup
 void setup()
 {
-  // Don't actualy need to create the server in here because its defined globally in Exercise 6...
   pinMode ( LED_BUILTIN, OUTPUT );
   Serial.begin ( 115200 );
 
@@ -59,7 +58,7 @@ void setup()
   WiFi.mode(WIFI_AP_STA);// Access point station
 
   Serial.println("Creating wifi access point");
-  WiFi.softAP(SSID,PASSWORD);// These are coming from IotGenericFunctions.h
+  WiFi.softAP(SSID,PASSWORD);
   Serial.print("IP address to connect to: ");
   Serial.println(WiFi.softAPIP());
 
@@ -87,13 +86,13 @@ void setup()
   server.onNotFound ( error404 );// Deal with 404 Errors
   server.begin(); // Trigger the server! Important step
 
-}// End of setup function for exercise seven
+}// End of setup
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-// Loop function for exercise seven
+// Loop
 void loop()
 {
   server.handleClient();
-}// End of loop function for exercise seven
+}// End of loop
 ////////////////////////////////////////////////////////////////////////////////
