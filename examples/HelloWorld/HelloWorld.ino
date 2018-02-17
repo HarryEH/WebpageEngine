@@ -1,9 +1,10 @@
 #include "WebpageEngine.h"
 #include <WiFiClient.h>
 #include <ESPWebServer.h>
+#include <WiFi.h>
 
-String SSID = "testserver"
-String PASSWORD = "password1"
+String SSID = "testserver";
+String PASSWORD = "password1";
 
 ESPWebServer server;
 
@@ -30,7 +31,7 @@ void setup()
   WiFi.mode(WIFI_AP_STA);// Access point station
 
   Serial.println("Creating wifi access point");
-  WiFi.softAP(SSID,PASSWORD);
+  WiFi.softAP(SSID.c_str(),PASSWORD.c_str());
   Serial.print("IP address to connect to: ");
   Serial.println(WiFi.softAPIP());
 

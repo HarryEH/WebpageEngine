@@ -5,8 +5,8 @@
 String dynamicSsid = "";
 String dynamicPassword = "";
 
-String SSID = "testserver"
-String PASSWORD = "password1"
+String SSID = "testserver";
+String PASSWORD = "password1";
 
 ESPWebServer server;
 
@@ -14,16 +14,25 @@ ESPWebServer server;
 // Setup test consts;
 // Create the page
 WebPage test("COM3505 Wifi List");
-attribute cssAttributes[3];
-attribute formAttributes[2];
-attribute selectAttributes[1];
-attribute passAttributes[3];
-attribute inputAttributes[2];
-element formElements[3];
+Attribute cssAttributes[3];
+Attribute formAttributes[2];
+Attribute selectAttributes[1];
+Attribute passAttributes[3];
+Attribute inputAttributes[2];
+Element formElements[3];
+
+////////////////////////////////////////////////////////////////////////////////
+// Function for when 404 errors
+void error404()
+{
+  char *message = "404 Error - File not found\n\n";
+  server.send (404, "text/plain", message);
+}
+////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
 // Setup
-void setupNine()
+void setup()
 {
 
   Serial.begin ( 115200 );
@@ -35,7 +44,7 @@ void setupNine()
   WiFi.mode(WIFI_AP_STA);// Access point station
 
   Serial.println("Creating wifi access point");
-  WiFi.softAP(SSID,PASSWORD);
+  WiFi.softAP(SSID.c_str(),PASSWORD.c_str());
   Serial.print("IP address to connect to: ");
   Serial.println(WiFi.softAPIP());
 
@@ -79,13 +88,15 @@ void wifiListPage()
   else
   {
 
+    Element wifiElements[n];
+
     for (int i = 0; i < n; i++)
     {
       wifiElements[i] = test.htmlElementCreator("option",
                         NULL, 0, WiFi.SSID(i), NULL, 0);
     }
 
-    formElements[0] = test.htmlElementCreator("select", selectAttributes, 1, "", wifiElements, number);
+    formElements[0] = test.htmlElementCreator("select", selectAttributes, 1, "", wifiElements, n);
     // add to form html element
     test.insertHtmlElement(BODY,
       test.htmlElementCreator("form", formAttributes, 2, "", formElements, 3));
@@ -121,7 +132,7 @@ void handlePostRequest() {
 
 	}
 
- int test = connectToWifi(dynamicSsid.c_str(), dynamicPassword.c_str());
+ int test = 0;
 
  if (test == 1 ) // Success case
  {
