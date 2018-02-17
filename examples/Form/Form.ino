@@ -80,6 +80,10 @@ void wifiListPage()
   Serial.print((millis()-t1));
   Serial.println("ms");
 
+  const int MAX_OPTIONS = 20;       // Why bother showing more than 20 networks?
+  String unique[MAX_OPTIONS];       // Array for the unique options
+  Element wifiElements[MAX_OPTIONS];// The unique options for the drop down - html elements.
+
   if (n == 0)
   {
     test.insertHtmlElement(BODY,
@@ -88,23 +92,74 @@ void wifiListPage()
   else
   {
 
-    Element wifiElements[n];
-
-    for (int i = 0; i < n; i++)
+    if ( n > MAX_OPTIONS )
     {
-      wifiElements[i] = test.htmlElementCreator("option",
-                        NULL, 0, WiFi.SSID(i), NULL, 0);
+      n = MAX_OPTIONS;
     }
 
-    formElements[0] = test.htmlElementCreator("select", selectAttributes, 1, "", wifiElements, n);
+    ////////////////////////////////////////////////////////////////////////////
+    // This is required because the api returns multiple results.... GRRRR
+    // This takes the ssids and creates a set from the array - nothing built in...
+    int number = 1;
+    unique[0] = WiFi.SSID(0);
+    bool flag = true;
+
+    for(int i = 1; i < MAX_OPTIONS; i++)
+    {
+      String ss = WiFi.SSID(i);
+
+      for(int j = 0; j < number; j++)
+      {
+        if(ss.equals(unique[j]))
+        {
+          flag = false;
+          break;
+        }
+      }
+
+      if(flag)
+      {
+        unique[number] = ss;
+        number++;
+      }
+      flag = true;
+    }
+    ////////////////////////////////////////////////////////////////////////////
+
+    for (int i = 0; i < number; i++)
+    {
+      wifiElements[i] = test.htmlElementCreator("option",
+                        NULL, 0, unique[i], NULL, 0);
+    }
+
+    formElements[0] = test.htmlElementCreator("select", selectAttributes, 1, "", wifiElements, number);
+
+//   if (n == 0)
+//   {
+//     test.insertHtmlElement(BODY,
+//         test.htmlElementCreator("form", NULL, 0, "no networks found", formElements, 3));
+//   }
+//   else
+//   {
+//     Element wifiElements[n];
+//
+//     for (int i = 0; i < n; i++)
+//     {
+//       wifiElements[i] = test.htmlElementCreator("option",
+//                         NULL, 0, WiFi.SSID(i), NULL, 0);
+//     }
+//
+//     formElements[0] = test.htmlElementCreator("select", selectAttributes, 1, "", NULL, 0);
     // add to form html element
     test.insertHtmlElement(BODY,
       test.htmlElementCreator("form", formAttributes, 2, "", formElements, 3));
   }
+  String s = test.renderPage();
 
-  server.send ( 200, "text/html", test.renderPage() );
-
+  server.send ( 200, "text/html",  s);
+  Serial.println("remove elements");
   test.removeHtmlElement(BODY, "form", "", 2, 3);
+  Serial.println("removing worked");
 }
 ////////////////////////////////////////////////////////////////////////////////
 
